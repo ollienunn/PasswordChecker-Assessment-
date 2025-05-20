@@ -61,11 +61,15 @@ app.set_grid(ROWS, COLUMNS) # Makes a grid
 about_me_window = gp.Window(app, "About Me") # Creates a new window
 about_me_window.height = 400 # Sets the height of the window
 about_me_window.width = 400 # Sets the width of the window
+
 about_me_window.set_grid(2, 1) # Sets the grid of the window
 int_lbl = gp.StyleLabel(about_me_window, "About Me") # Label
 int_lbl.font_size = 20 # Font size
-info_lbl = gp.Label(about_me_window, "M") # Label
+info_lbl = gp.Label(about_me_window, f"My name is Oliver Nunn, I made this password checker to help people with shocking passwords that are shit. I have my own git hub page you can open it here: {git_hub_lbl}") # Label
+git_hub_lbl = gp.Label(about_me_window, "link")
+
 about_me_window.add(int_lbl, 1, 1, align="center") # Adds the label to the window
+about_me_window.add(info_lbl,2, 1)
 
 ######################################################################
 ############  WIDGETS  ###############
