@@ -13,7 +13,6 @@ def toggle_mask(event): # Toggles the password
 def open_about_me_window(event): # Opens the about me window
     about_me_window.show()
 
-
 def check_password(event): # Checks the password
     password = password_inp.text # Gets the password
     feedback.text = "" # Clears the feedback
@@ -63,17 +62,12 @@ about_me_window = gp.Window(app, "About Me") # Creates a new window
 about_me_window.height = 400 # Sets the height of the window
 about_me_window.width = 400 # Sets the width of the window
 about_me_window.set_grid(2, 1) # Sets the grid of the window
+int_lbl = gp.StyleLabel(about_me_window, "About Me") # Label
+int_lbl.font_size = 20 # Font size
+info_lbl = gp.Label(about_me_window, "M") # Label
+about_me_window.add(int_lbl, 1, 1, align="center") # Adds the label to the window
 
 ######################################################################
-
-########## Event Stuff ##########
-
-check = gp.Checkbox(app, 'See password') # A checkbox to toggle the password
-check.add_event_listener('change', toggle_mask) # Changes the password to a visible input
-
-#################################
-
-
 ############  WIDGETS  ###############
 
 intro_lbl = gp.StyleLabel(app, "Password Checker 9000") # Label
@@ -90,6 +84,14 @@ strength_password = gp.Progressbar(app) # Progress bar for the password strength
 
 
 #######################################
+
+########## Event Stuff ##########
+
+check = gp.Checkbox(app, 'See password') # A checkbox to toggle the password
+check.add_event_listener('change', toggle_mask) # Changes the password to a visible input
+bout_me.add_event_listener('mouse_over', open_about_me_window) # Opens the about me window
+
+#################################
 
 ######## Adding Widgets to the app ########
 
