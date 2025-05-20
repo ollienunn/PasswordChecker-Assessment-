@@ -5,13 +5,14 @@ HEIGHT = 600
 ROWS = 4
 COLUMNS = 3
 
-######  EVENTS  ######
+############ Classes (def) ############
 
 def toggle_mask(event): # Toggles the password
     password_inp.toggle() # Makes the input visible or not
 
-######################
-############ Classes (def) ############
+def open_about_me_window(event): # Opens the about me window
+    about_me_window.show()
+
 
 def check_password(event): # Checks the password
     password = password_inp.text # Gets the password
@@ -45,18 +46,25 @@ def check_password(event): # Checks the password
 
 ######################
 # Need a score system for the password,
-#                                       speacial characters = + points
-#                                       numbers = + points
-#                                       length 10 + = + points  
-#                                       mix of uppercase and lowercase = + points                                      
+#                                                       
 #                                       whether or not it is a common password = +- points      
 #                                       if it has been pwnaed = - points
 #                                       common letters = - points
+#
 ######################
 
 app = gp.GooeyPieApp("Password Checker") # Defines the stuff in app
 app.set_size(WIDTH, HEIGHT) # Makes the app a certain size depending on the width and height
 app.set_grid(ROWS, COLUMNS) # Makes a grid
+
+######################    Windows   ##################################
+
+about_me_window = gp.Window(app, "About Me") # Creates a new window
+about_me_window.height = 400 # Sets the height of the window
+about_me_window.width = 400 # Sets the width of the window
+about_me_window.set_grid(2, 1) # Sets the grid of the window
+
+######################################################################
 
 ########## Event Stuff ##########
 
@@ -70,6 +78,7 @@ check.add_event_listener('change', toggle_mask) # Changes the password to a visi
 
 intro_lbl = gp.StyleLabel(app, "Password Checker 9000") # Label
 intro_lbl.font_size = 20 # Font size
+bout_me = gp.Label(app, "About Me") # Label
 password_lbl = gp.Label(app, "Enter your password: ") # Label
 password_inp = gp.Secret(app) # Makes the input dots
 password_inp.width = 50 # Sets the size of the input
@@ -79,13 +88,15 @@ feedback = gp.Label(app, "") # Text box for feedback
 strength_password = gp.Progressbar(app) # Progress bar for the password strength
 
 
+
 #######################################
 
 ######## Adding Widgets to the app ########
 
 app.add(intro_lbl, 1, 2, align="center") # Needed to show stuff on the app
+app.add(bout_me, 1, 3, align="right") # Aligns the input to the center
 app.add(password_lbl, 2, 1, align="center") # Aligns the input to the center
-app.add(password_inp, 2, 2) 
+app.add(password_inp, 2, 2, fill = True)
 app.add(check, 2, 3, align="center")
 app.add(check_btn, 3, 1, align="center") # Aligns the button to the center
 app.add(strength_password, 3, 2, fill = True, column_span = 2) # Adds the progress bar to the app
