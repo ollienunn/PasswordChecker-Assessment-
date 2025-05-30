@@ -1,3 +1,4 @@
+import re
 import gooeypie as gp
 
 WIDTH = 500
@@ -12,6 +13,9 @@ def toggle_mask(event): # Toggles the password
 
 def open_about_me_window(event): # Opens the about me window
     about_me_window.show()
+
+def open_requirements_window(event): # Opens the about me window
+    requirments_window.show()
 
 def check_password(event): # Checks the password
     password = password_inp.text # Gets the password
@@ -62,14 +66,27 @@ about_me_window = gp.Window(app, "About Me") # Creates a new window
 about_me_window.height = 400 # Sets the height of the window
 about_me_window.width = 400 # Sets the width of the window
 
-about_me_window.set_grid(2, 1) # Sets the grid of the window
+about_me_window.set_grid(2, 2) # Sets the grid of the window
 int_lbl = gp.StyleLabel(about_me_window, "About Me") # Label
 int_lbl.font_size = 20 # Font size
-info_lbl = gp.Label(about_me_window, f"My name is Oliver Nunn, I made this password checker to help people with shocking passwords that are shit. I have my own git hub page you can open it here: {git_hub_lbl}") # Label
-git_hub_lbl = gp.Label(about_me_window, "link")
+info_lbl = gp.Label(about_me_window, "My name is Oliver Nunn, I made this password checker to help people with shocking passwords. I have my own git hub page you can open it here: ") # Label
+git_hub_lbl = gp.Hyperlink(about_me_window, "Git Hub", "https://github.com/ollienunn")
+about_me_info = gp.Label(about_me_window, "" + str(info_lbl) + str(git_hub_lbl)) # Text box for the about me info
 
-about_me_window.add(int_lbl, 1, 1, align="center") # Adds the label to the window
-about_me_window.add(info_lbl,2, 1)
+about_me_window.add(int_lbl, 1, 1, column_span = 2, align="center") # Adds the label to the window
+about_me_window.add(info_lbl, 2, 1, align="right") # Adds the about me info to the window
+about_me_window.add(git_hub_lbl, 2, 2, align="left") # Adds the about me info to the window
+
+requirments_window = gp.Window(app, "Requirments") # Creates a new window
+requirments_window.height = 400 # Sets the height of the window
+requirments_window.width = 400 # Sets the width of the window
+requirments_window.set_grid(2, 1) # Sets the grid of the window
+requirments_lbl = gp.StyleLabel(requirments_window, "Requirments") # Label
+requirments_lbl.font_size = 20 # Font size
+requirments_info = gp.Label(requirments_window, "The requirments for a good password are,\n The length being above 10 characters this ensures that it is strong and makes it more secure,\n Having an uppercase letter more than one makes it stronger but at minimum one is required,\n A special charactcer also increases the security by alot,\n Finally numbers are important as they further increase the strength of the password.\n") # Label
+
+requirments_window.add(requirments_lbl, 1, 1, align="center") # Adds the label to the window
+requirments_window.add(requirments_info, 2, 1, align="left") # Adds the about me info to the window
 
 ######################################################################
 ############  WIDGETS  ###############
@@ -77,6 +94,7 @@ about_me_window.add(info_lbl,2, 1)
 intro_lbl = gp.StyleLabel(app, "Password Checker 9000") # Label
 intro_lbl.font_size = 20 # Font size
 bout_me = gp.Label(app, "About Me") # Label
+require_wind = gp.Label(app, "Requirments") # Label
 password_lbl = gp.Label(app, "Enter your password: ") # Label
 password_inp = gp.Secret(app) # Makes the input dots
 password_inp.width = 50 # Sets the size of the input
@@ -85,20 +103,18 @@ feedback_lbl = gp.Label(app, "Feedback: ") # Label
 feedback = gp.Label(app, "") # Text box for feedback
 strength_password = gp.Progressbar(app) # Progress bar for the password strength
 
-
-
 #######################################
-
 ########## Event Stuff ##########
 
 check = gp.Checkbox(app, 'See password') # A checkbox to toggle the password
 check.add_event_listener('change', toggle_mask) # Changes the password to a visible input
 bout_me.add_event_listener('mouse_over', open_about_me_window) # Opens the about me window
+require_wind.add_event_listener('mouse_over', open_requirements_window) # Opens the about me window
 
 #################################
-
 ######## Adding Widgets to the app ########
 
+app.add(require_wind, 1, 1, align="left") # Adds the requirments button to the app
 app.add(intro_lbl, 1, 2, align="center") # Needed to show stuff on the app
 app.add(bout_me, 1, 3, align="right") # Aligns the input to the center
 app.add(password_lbl, 2, 1, align="center") # Aligns the input to the center
@@ -107,8 +123,7 @@ app.add(check, 2, 3, align="center")
 app.add(check_btn, 3, 1, align="center") # Aligns the button to the center
 app.add(strength_password, 3, 2, fill = True, column_span = 2) # Adds the progress bar to the app
 app.add(feedback_lbl, 4, 1, align="center") # Aligns the input to the center
-app.add(feedback, 4, 2) # Adds the feedback input to the app
-#
+app.add(feedback, 4, 2) # Adds the feedback input to the app#
 
 ###########################################
 
