@@ -86,7 +86,7 @@ requirments_lbl.font_size = 20 # Font size
 requirments_info = gp.Label(requirments_window, "The requirments for a good password are,\n The length being above 10 characters this ensures that it is strong and makes it more secure,\n Having an uppercase letter more than one makes it stronger but at minimum one is required,\n A special charactcer also increases the security by alot,\n Finally numbers are important as they further increase the strength of the password.\n") # Label
 
 requirments_window.add(requirments_lbl, 1, 1, align="center") # Adds the label to the window
-requirments_window.add(requirments_info, 2, 1, align="left") # Adds the about me info to the window
+requirments_window.add(requirments_info, 2, 1, align="center") # Adds the about me info to the window
 
 ######################################################################
 ############  WIDGETS  ###############
@@ -94,7 +94,7 @@ requirments_window.add(requirments_info, 2, 1, align="left") # Adds the about me
 intro_lbl = gp.StyleLabel(app, "Password Checker 9000") # Label
 intro_lbl.font_size = 20 # Font size
 bout_me = gp.Label(app, "About Me") # Label
-require_wind = gp.Label(app, "Requirments") # Label
+require_wind = gp.Label(app, "Requirments for the password") # Label
 password_lbl = gp.Label(app, "Enter your password: ") # Label
 password_inp = gp.Secret(app) # Makes the input dots
 password_inp.width = 50 # Sets the size of the input
