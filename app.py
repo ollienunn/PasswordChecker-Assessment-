@@ -86,7 +86,6 @@ def check_password(event): # Checks the password
 ######################
 # Need a score system for the password,
 #                                                       
-#                                       whether or not it is a common password = +- points      
 #                                       if it has been pwnaed = - points
 #                                       common letters = - points
 #
