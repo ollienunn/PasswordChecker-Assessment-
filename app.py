@@ -33,8 +33,20 @@ def check_password(event): # Checks the password
         if len(password) < 5: # Checks the length of the password
             feedback.text += "Your password is very short must be 10 characters or more\n" # Adds to the feedback
             strength_password.value -= 80
-        elif len(password) < 8:
-            strength_password.value -= 60
+        elif len(password) <= 9:
+            strength_password.value -= 50
+            if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
+                feedback.text += "Your password must contain a number\n" # Adds to the feedback
+                strength_password.value -= 10 
+            if not any(char.isupper() for char in password): # Checks if there are uppercase letters in the password
+                feedback.text += "Your password must contain at least 1 uppercase letter\n" # Adds to the feedback
+                strength_password.value -= 10 
+            if not any(char.islower() for char in password): # Checks if there are lowercase letters in the password
+                feedback.text += "Your password must contain at least 1 lowercase letter\n" # Adds to the feedback
+                strength_password.value -= 10
+            if not any(not char.isalnum() for char in password):  # Checks if there are special characters
+                feedback.text += "Your password must contain at least 1 special character eg. !@#$%&*()\n"
+                strength_password.value -= 10
             feedback.text += "Your password is getting closer but must 10 characters or more\n" # Adds to the feedback
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
