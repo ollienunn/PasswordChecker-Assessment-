@@ -1,4 +1,3 @@
-import re
 import gooeypie as gp
 
 WIDTH = 500
@@ -7,6 +6,23 @@ ROWS = 4
 COLUMNS = 3
 
 ############ Classes (def) ############
+
+def check_common_passwords():
+    f = open("passwords_10k.txt")
+    
+    common_passwords = f.readlines()
+    clean_passwords = []
+ 
+    for password in common_passwords:
+        password = password.replace("\n", "")
+        clean_passwords.append(password)
+ 
+    if "text_box_text" in clean_passwords:
+        print("Yes")
+    else:
+        print("No")
+    
+    f.close()
 
 def toggle_mask(event): # Toggles the password
     password_inp.toggle() # Makes the input visible or not
