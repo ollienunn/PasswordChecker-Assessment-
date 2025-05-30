@@ -1,28 +1,11 @@
 import gooeypie as gp
 
-WIDTH = 500
+WIDTH = 600
 HEIGHT = 600
 ROWS = 4
 COLUMNS = 3
 
 ############ Classes (def) ############
-
-def check_common_passwords():
-    f = open("passwords_10k.txt")
-    
-    common_passwords = f.readlines()
-    clean_passwords = []
- 
-    for password in common_passwords:
-        password = password.replace("\n", "")
-        clean_passwords.append(password)
- 
-    if "text_box_text" in clean_passwords:
-        print("Yes")
-    else:
-        print("No")
-    
-    f.close()
 
 def toggle_mask(event): # Toggles the password
     password_inp.toggle() # Makes the input visible or not
@@ -34,34 +17,59 @@ def open_requirements_window(event): # Opens the about me window
     requirments_window.show()
 
 def check_password(event): # Checks the password
+
     password = password_inp.text # Gets the password
     feedback.text = "" # Clears the feedback
     strength_password.value = 100 # Sets the progress bar to 0
-    if len(password) < 10: # Checks the length of the password
-        feedback.text += "Your password is too short must be 10 characters or more\n" # Adds to the feedback
-        strength_password.value -= 25 
-    if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
-        feedback.text += "Your password must contain a number\n" # Adds to the feedback
-        strength_password.value -= 25 
-    if not any(char.isupper() for char in password): # Checks if there are uppercase letters in the password
-        feedback.text += "Your password must contain at least 1 uppercase letter\n" # Adds to the feedback
-        strength_password.value -= 25 
-    if not any(char.islower() for char in password): # Checks if there are lowercase letters in the password
-        feedback.text += "Your password must contain at least 1 lowercase letter\n" # Adds to the feedback
-    if not any(not char.isalnum() for char in password):  # Checks if there are special characters
-        feedback.text += "Your password must contain at least 1 special character eg. !@#$%&*()\n"
-        strength_password.value -= 25
-    if strength_password.value == 100:
-        feedback.text += "Your password is strong, Good Job\n"
-    if strength_password.value == 75:
-        feedback.text += "Your password is alright but it could be improved\n"
-    if strength_password.value == 50:
-        feedback.text += "I hope this isn't your password it needs work\n"
-    if strength_password.value == 25:
-        feedback.text += "Listen to the feedback and try again\n"
-    if strength_password.value == 0:
-        feedback.text += "Wow your password really sucks use the feedback you need it\n"
+
+    if not any(char for char in password): # Checks if there are numbers in the password
+        feedback.text += "You must input a password\n" # Adds to the feedback
+        strength_password.value -= 100
+    else:
+        f = open("passwords_10k.txt") #Pass word checker
+        common_passwords = f.readlines()
+        clean_passwords = []
+
+        if len(password) < 5: # Checks the length of the password
+            feedback.text += "Your password is very short must be 10 characters or more\n" # Adds to the feedback
+            strength_password.value -= 80
+        elif len(password) < 8:
+            strength_password.value -= 60
+            feedback.text += "Your password is getting closer but must 10 characters or more\n" # Adds to the feedback
+        elif len(password) >= 10: # Checks the length of the password
+            if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
+                feedback.text += "Your password must contain a number\n" # Adds to the feedback
+                strength_password.value -= 20 
+            if not any(char.isupper() for char in password): # Checks if there are uppercase letters in the password
+                feedback.text += "Your password must contain at least 1 uppercase letter\n" # Adds to the feedback
+                strength_password.value -= 20 
+            if not any(char.islower() for char in password): # Checks if there are lowercase letters in the password
+                feedback.text += "Your password must contain at least 1 lowercase letter\n" # Adds to the feedback
+            if not any(not char.isalnum() for char in password):  # Checks if there are special characters
+                feedback.text += "Your password must contain at least 1 special character eg. !@#$%&*()\n"
+                strength_password.value -= 20
+            if strength_password.value == 100:
+                feedback.text += "Your password is strong, Good Job\n"
+            if strength_password.value == 75:
+                feedback.text += "Your password is alright but it could be improved\n"
+            if strength_password.value == 50:
+                feedback.text += "I hope this isn't your password it needs work\n"
+            if strength_password.value == 25:
+                feedback.text += "Listen to the feedback and try again\n"
+            if strength_password.value == 0:
+                feedback.text += "Wow your password really sucks use the feedback you need it\n"
+ 
+            for passwords in common_passwords:
+                passwords = passwords.replace("\n", "")
+                clean_passwords.append(passwords)
+ 
+            if password in clean_passwords:
+                strength_password.value -= 20
+                feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
+            else:
+                return
     
+            f.close()
 
 ######################
 # Need a score system for the password,
@@ -85,7 +93,7 @@ about_me_window.width = 400 # Sets the width of the window
 about_me_window.set_grid(2, 2) # Sets the grid of the window
 int_lbl = gp.StyleLabel(about_me_window, "About Me") # Label
 int_lbl.font_size = 20 # Font size
-info_lbl = gp.Label(about_me_window, "My name is Oliver Nunn, I made this password checker to help people with shocking passwords. I have my own git hub page you can open it here: ") # Label
+info_lbl = gp.Label(about_me_window, "This is version 1 of Password Checker 9000, it's meant to be a guide to help people understand how they can improve their passwords or create a strong password: ") # Label
 git_hub_lbl = gp.Hyperlink(about_me_window, "Git Hub", "https://github.com/ollienunn")
 about_me_info = gp.Label(about_me_window, "" + str(info_lbl) + str(git_hub_lbl)) # Text box for the about me info
 
