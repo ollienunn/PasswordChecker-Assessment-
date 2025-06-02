@@ -32,9 +32,11 @@ def check_password(event): # Checks the password
 
         if len(password) < 5: # Checks the length of the password
             feedback.text += "Your password is very short must be 10 characters or more\n" # Adds to the feedback
-            strength_password.value -= 80
+            strength_password.value -= 90
+            app.set_icon("Cross.png") # Sets the icon of the app
         elif len(password) <= 9:
             strength_password.value -= 50
+            app.set_icon("Cross.png") # Sets the icon of the app
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
                 feedback.text += "Your password must contain a number\n" # Adds to the feedback
                 strength_password.value -= 10 
@@ -48,6 +50,15 @@ def check_password(event): # Checks the password
                 feedback.text += "Your password must contain at least 1 special character eg. !@#$%&*()\n"
                 strength_password.value -= 10
             feedback.text += "Your password is getting closer but must 10 characters or more\n" # Adds to the feedback
+            for passwords in common_passwords:
+                passwords = passwords.replace("\n", "")
+                clean_passwords.append(passwords)
+ 
+            if password in clean_passwords:
+                strength_password.value -= 10
+                feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
+            else:
+                return
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
                 feedback.text += "Your password must contain a number\n" # Adds to the feedback
