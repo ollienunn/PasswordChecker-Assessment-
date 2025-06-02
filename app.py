@@ -62,14 +62,19 @@ def check_password(event): # Checks the password
                 strength_password.value -= 20
             if strength_password.value == 100:
                 feedback.text += "Your password is strong, Good Job\n"
+                app.set_icon("Green_tick.svg.png") # Sets the icon of the app
             if strength_password.value == 75:
                 feedback.text += "Your password is alright but it could be improved\n"
+                app.set_icon("Green_tick.svg.png") # Sets the icon of the app
             if strength_password.value == 50:
                 feedback.text += "I hope this isn't your password it needs work\n"
+                app.set_icon("Red_cross.svg.png") # Changes the icon to a red cross if the password is bad
             if strength_password.value == 25:
                 feedback.text += "Listen to the feedback and try again\n"
+                app.set_icon("Red_cross.svg.png") # Changes the icon to a red cross if the password is bad
             if strength_password.value == 0:
                 feedback.text += "Wow your password really sucks use the feedback you need it\n"
+                app.set_icon("Red_cross.svg.png") # Changes the icon to a red cross if the password is bad
  
             for passwords in common_passwords:
                 passwords = passwords.replace("\n", "")
@@ -94,13 +99,13 @@ def check_password(event): # Checks the password
 app = gp.GooeyPieApp("Password Checker") # Defines the stuff in app
 app.set_size(WIDTH, HEIGHT) # Makes the app a certain size depending on the width and height
 app.set_grid(ROWS, COLUMNS) # Makes a grid
-app.set_icon("")
+app.set_icon("Green_tick.svg.png") # Sets the icon of the app
 
 ######################    Windows   ##################################
 
 about_me_window = gp.Window(app, "About Me") # Creates a new window
 about_me_window.height = 400 # Sets the height of the window
-about_me_window.width = 400 # Sets the width of the window
+about_me_window.width = 200 # Sets the width of the window
 
 about_me_window.set_grid(2, 2) # Sets the grid of the window
 int_lbl = gp.StyleLabel(about_me_window, "About Me") # Label
