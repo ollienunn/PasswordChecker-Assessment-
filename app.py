@@ -25,9 +25,12 @@ def check_password(event): # Checks the password
     if not any(char for char in password): # Checks if there are numbers in the password
         feedback.text += "You must input a password\n" # Adds to the feedback
         strength_password.value -= 100
+        app.set_icon("Cross.png") # Sets the icon of the app
     else:
         f = open("passwords_10k.txt") #Pass word checker
         common_passwords = f.readlines()
+        r = open("10000-passwords.txt") #Pass word checker
+        more_common_passwords = r.readlines()
         clean_passwords = []
 
         if len(password) < 5: # Checks the length of the password
@@ -54,7 +57,7 @@ def check_password(event): # Checks the password
                 passwords = passwords.replace("\n", "")
                 clean_passwords.append(passwords)
  
-            if password in clean_passwords:
+            if password in clean_passwords or password in more_common_passwords:
                 strength_password.value -= 10
                 feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
             else:
@@ -74,24 +77,24 @@ def check_password(event): # Checks the password
             if strength_password.value == 100:
                 feedback.text += "Your password is strong, Good Job\n"
                 app.set_icon("Green_tick.svg.png") # Sets the icon of the app
-            if strength_password.value == 75:
+            if strength_password.value == 80:
                 feedback.text += "Your password is alright but it could be improved\n"
                 app.set_icon("Green_tick.svg.png") # Sets the icon of the app
-            if strength_password.value == 50:
+            if strength_password.value == 60:
                 feedback.text += "I hope this isn't your password it needs work\n"
-                app.set_icon("Red_cross.svg.png") # Changes the icon to a red cross if the password is bad
-            if strength_password.value == 25:
+                app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
+            if strength_password.value == 40:
                 feedback.text += "Listen to the feedback and try again\n"
-                app.set_icon("Red_cross.svg.png") # Changes the icon to a red cross if the password is bad
-            if strength_password.value == 0:
+                app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
+            if strength_password.value == 20:
                 feedback.text += "Wow your password really sucks use the feedback you need it\n"
-                app.set_icon("Red_cross.svg.png") # Changes the icon to a red cross if the password is bad
+                app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
  
             for passwords in common_passwords:
                 passwords = passwords.replace("\n", "")
                 clean_passwords.append(passwords)
  
-            if password in clean_passwords:
+            if password in clean_passwords or password in more_common_passwords:
                 strength_password.value -= 20
                 feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
             else:
