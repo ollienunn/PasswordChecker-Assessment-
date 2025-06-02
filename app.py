@@ -94,6 +94,7 @@ def check_password(event): # Checks the password
 app = gp.GooeyPieApp("Password Checker") # Defines the stuff in app
 app.set_size(WIDTH, HEIGHT) # Makes the app a certain size depending on the width and height
 app.set_grid(ROWS, COLUMNS) # Makes a grid
+app.set_icon("")
 
 ######################    Windows   ##################################
 
@@ -104,21 +105,21 @@ about_me_window.width = 400 # Sets the width of the window
 about_me_window.set_grid(2, 2) # Sets the grid of the window
 int_lbl = gp.StyleLabel(about_me_window, "About Me") # Label
 int_lbl.font_size = 20 # Font size
-info_lbl = gp.Label(about_me_window, "This is version 1 of Password Checker 9000, it's meant to be a guide to help people understand how they can improve their passwords or create a strong password: ") # Label
-git_hub_lbl = gp.Hyperlink(about_me_window, "Git Hub", "https://github.com/ollienunn")
+info_lbl = gp.Label(about_me_window, "This is version 1 of Password Checker 9000, it's meant to be a guide to help people understand how they can improve their passwords or create a strong password to see what else i have made check out my git hub page") # Label
+git_hub_lbl = gp.Hyperlink(about_me_window, "Here", "https://github.com/ollienunn")
 about_me_info = gp.Label(about_me_window, "" + str(info_lbl) + str(git_hub_lbl)) # Text box for the about me info
 
 about_me_window.add(int_lbl, 1, 1, column_span = 2, align="center") # Adds the label to the window
 about_me_window.add(info_lbl, 2, 1, align="right") # Adds the about me info to the window
 about_me_window.add(git_hub_lbl, 2, 2, align="left") # Adds the about me info to the window
 
-requirments_window = gp.Window(app, "Requirments") # Creates a new window
+requirments_window = gp.Window(app, "Requirements") # Creates a new window
 requirments_window.height = 400 # Sets the height of the window
 requirments_window.width = 400 # Sets the width of the window
 requirments_window.set_grid(2, 1) # Sets the grid of the window
 requirments_lbl = gp.StyleLabel(requirments_window, "Requirments") # Label
 requirments_lbl.font_size = 20 # Font size
-requirments_info = gp.Label(requirments_window, "The requirments for a good password are,\n The length being above 10 characters this ensures that it is strong and makes it more secure,\n Having an uppercase letter more than one makes it stronger but at minimum one is required,\n A special charactcer also increases the security by alot,\n Finally numbers are important as they further increase the strength of the password.\n") # Label
+requirments_info = gp.Label(requirments_window, "The requirements for a good password are,\n The length being above 10 characters, \n Having at least one uppercase letter,\n A special charactcer eg (#:!£$*),\n Numbers (123456789).\n") # Label
 
 requirments_window.add(requirments_lbl, 1, 1, align="center") # Adds the label to the window
 requirments_window.add(requirments_info, 2, 1, align="center") # Adds the about me info to the window
