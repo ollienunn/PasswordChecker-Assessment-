@@ -33,7 +33,7 @@ def check_password(event): # Checks the password
         more_common_passwords = r.readlines()
         clean_passwords = []
 
-        if len(password) < 5: # Checks the length of the password
+        if len(password) < 6: # Checks the length of the password
             feedback.text += "Your password is very short must be 10 characters or more\n" # Adds to the feedback
             strength_password.value -= 90
             app.set_icon("Cross.png") # Sets the icon of the app
@@ -56,12 +56,23 @@ def check_password(event): # Checks the password
             for passwords in common_passwords:
                 passwords = passwords.replace("\n", "")
                 clean_passwords.append(passwords)
+            
+            for passwords in more_common_passwords:
+                passwords = passwords.replace("\n", "")
+                clean_passwords.append(passwords)
  
-            if password in clean_passwords or password in more_common_passwords:
-                strength_password.value -= 10
-                feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
-            else:
-                return
+            for common in clean_passwords:
+                if common and common in password and len(common) > 3:  # Avoid empty lines and very short substrings
+                    strength_password.value -= 10
+                    feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
+                    break  # Only penalize once
+
+
+            #if password in clean_passwords or password in more_common_passwords:
+            #    strength_password.value -= 10
+            #    feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
+            #else:
+            #    return
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
                 feedback.text += "Your password must contain a number\n" # Adds to the feedback
@@ -71,9 +82,25 @@ def check_password(event): # Checks the password
                 strength_password.value -= 20 
             if not any(char.islower() for char in password): # Checks if there are lowercase letters in the password
                 feedback.text += "Your password must contain at least 1 lowercase letter\n" # Adds to the feedback
+                strength_password.value -= 20 
             if not any(not char.isalnum() for char in password):  # Checks if there are special characters
                 feedback.text += "Your password must contain at least 1 special character eg. !@#$%&*()\n"
                 strength_password.value -= 20
+ 
+            for passwords in common_passwords:
+                passwords = passwords.replace("\n", "")
+                clean_passwords.append(passwords)
+            
+            for passwords in more_common_passwords:
+                passwords = passwords.replace("\n", "")
+                clean_passwords.append(passwords)
+            
+            for common in clean_passwords:
+                if common and common in password and len(common) > 3:  # Avoid empty lines and very short substrings
+                    strength_password.value -= 20
+                    feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
+                    break
+            
             if strength_password.value == 100:
                 feedback.text += "Your password is strong, Good Job\n"
                 app.set_icon("Green_tick.svg.png") # Sets the icon of the app
@@ -90,17 +117,17 @@ def check_password(event): # Checks the password
                 feedback.text += "Wow your password really sucks use the feedback you need it\n"
                 app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
  
-            for passwords in common_passwords:
-                passwords = passwords.replace("\n", "")
-                clean_passwords.append(passwords)
- 
-            if password in clean_passwords or password in more_common_passwords:
-                strength_password.value -= 20
-                feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
-            else:
-                return
+            #if password in clean_passwords or password in more_common_passwords:
+            #    strength_password.value -= 20
+            #    feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
+            #else:
+            #    return
+        elif len(password) > 25:
+            feedback.text += "Your password is super long but strong hope you can remember it :)\n" # Adds to the feedback
+            strength_password.value = 90
     
             f.close()
+            r.close()
 
 ######################
 # Need a score system for the password,
