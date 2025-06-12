@@ -1,4 +1,5 @@
 import gooeypie as gp
+import pwnedpasswords
 
 WIDTH = 600
 HEIGHT = 600
@@ -63,9 +64,17 @@ def check_password(event): # Checks the password
  
             for common in clean_passwords:
                 if common and common in password and len(common) > 3:  # Avoid empty lines and very short substrings
-                    strength_password.value -= 10
+                    strength_password.value -= 15
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break  # Only penalize once
+            
+            # Check if password has been pwned
+            pwned_count = pwnedpasswords.check(password)
+            print(f"Pwned count: {pwned_count}")  # This will print to the terminal
+
+            if pwned_count > 0:
+                feedback.text += f"Warning: This password has appeared in {pwned_count} data breaches!\n"
+                strength_password.value -= 40
 
 
             #if password in clean_passwords or password in more_common_passwords:
@@ -97,7 +106,7 @@ def check_password(event): # Checks the password
             
             for common in clean_passwords:
                 if common and common in password and len(common) > 3:  # Avoid empty lines and very short substrings
-                    strength_password.value -= 20
+                    strength_password.value -= 30
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break
             
@@ -106,9 +115,11 @@ def check_password(event): # Checks the password
                 app.set_icon("Green_tick.svg.png") # Sets the icon of the app
             if strength_password.value == 80:
                 feedback.text += "Your password is alright but it could be improved\n"
+            if strength_password.value == 70:
+                feedback.text += "Your password is better but don't include a common password\n"
                 app.set_icon("Green_tick.svg.png") # Sets the icon of the app
             if strength_password.value == 60:
-                feedback.text += "I hope this isn't your password it needs work\n"
+                feedback.text += "Look at the feedback then fix your password\n"
                 app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
             if strength_password.value == 40:
                 feedback.text += "Listen to the feedback and try again\n"
@@ -144,12 +155,12 @@ app.set_icon("Green_tick.svg.png") # Sets the icon of the app
 
 ######################    Windows   ##################################
 
-about_me_window = gp.Window(app, "About Me") # Creates a new window
+about_me_window = gp.Window(app, "About") # Creates a new window
 about_me_window.height = 400 # Sets the height of the window
 about_me_window.width = 200 # Sets the width of the window
 
 about_me_window.set_grid(2, 2) # Sets the grid of the window
-int_lbl = gp.StyleLabel(about_me_window, "About Me") # Label
+int_lbl = gp.StyleLabel(about_me_window, "About the App") # Label
 int_lbl.font_size = 20 # Font size
 info_lbl = gp.Label(about_me_window, "This is version 1 of Password Checker 9000, it's meant to be a guide to help people understand how they can improve their passwords or create a strong password to see what else i have made check out my git hub page") # Label
 git_hub_lbl = gp.Hyperlink(about_me_window, "Here", "https://github.com/ollienunn")
@@ -175,7 +186,7 @@ requirments_window.add(requirments_info, 2, 1, align="center") # Adds the about 
 
 intro_lbl = gp.StyleLabel(app, "Password Checker 9000") # Label
 intro_lbl.font_size = 20 # Font size
-bout_me = gp.Label(app, "About Me") # Label
+bout_me = gp.Label(app, "About") # Label
 require_wind = gp.Label(app, "Requirments for the password") # Label
 password_lbl = gp.Label(app, "Enter your password: ") # Label
 password_inp = gp.Secret(app) # Makes the input dots
