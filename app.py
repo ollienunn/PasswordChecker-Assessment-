@@ -1,7 +1,8 @@
+from re import A
 import gooeypie as gp
 import pwnedpasswords
 
-WIDTH = 600
+WIDTH = 1000
 HEIGHT = 600
 ROWS = 4
 COLUMNS = 3
@@ -34,7 +35,7 @@ def check_password(event): # Checks the password
         more_common_passwords = r.readlines()
         clean_passwords = []
 
-        if len(password) < 6: # Checks the length of the password
+        if len(password) <= 6: # Checks the length of the password
             feedback.text += "Your password is very short must be 10 characters or more\n" # Adds to the feedback
             strength_password.value -= 90
             app.set_icon("Cross.png") # Sets the icon of the app
@@ -66,22 +67,16 @@ def check_password(event): # Checks the password
                 if common and common in password and len(common) > 3:  # Avoid empty lines and very short substrings
                     strength_password.value -= 15
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
-                    break  # Only penalize once
+                    break
             
             # Check if password has been pwned
             pwned_count = pwnedpasswords.check(password)
-            print(f"Pwned count: {pwned_count}")  # This will print to the terminal
 
             if pwned_count > 0:
-                feedback.text += f"Warning: This password has appeared in {pwned_count} data breaches!\n"
+                feedback.text += f"Warning: This password has appeared in {pwned_count} data breaches you should change it\n"
                 strength_password.value -= 40
 
 
-            #if password in clean_passwords or password in more_common_passwords:
-            #    strength_password.value -= 10
-            #    feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
-            #else:
-            #    return
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
                 feedback.text += "Your password must contain a number\n" # Adds to the feedback
@@ -109,6 +104,12 @@ def check_password(event): # Checks the password
                     strength_password.value -= 30
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break
+            
+            pwned_count = pwnedpasswords.check(password)
+
+            if pwned_count > 0:
+                feedback.text += f"Warning: This password has appeared in {pwned_count} data breaches you should change it\n"
+                strength_password.value -= 20
             
             if strength_password.value == 100:
                 feedback.text += "Your password is strong, Good Job\n"
@@ -153,22 +154,41 @@ app.set_size(WIDTH, HEIGHT) # Makes the app a certain size depending on the widt
 app.set_grid(ROWS, COLUMNS) # Makes a grid
 app.set_icon("Green_tick.svg.png") # Sets the icon of the app
 
+
 ######################    Windows   ##################################
 
 about_me_window = gp.Window(app, "About") # Creates a new window
 about_me_window.height = 400 # Sets the height of the window
 about_me_window.width = 200 # Sets the width of the window
 
+#######################    Containers   ##########################
+
+about_me_container = gp.Container(about_me_window) # Creates a new container
+about_me_container.set_grid(3, 2) # Sets the grid of the container
+
+info_lbl = gp.Label(about_me_container, "This is version 1 of Password Checker 9000,")
+info_lbl2 = gp.Label(about_me_container, "It's meant to be a guide to help people understand how they can improve their passwords,") # Label
+info_lbl3 = gp.Label(about_me_container, "Or create a strong password to see what else i have made check out my git hub page") # Label
+git_hub_lbl = gp.Hyperlink(about_me_container, "Here!", "https://github.com/ollienunn")
+
+about_me_container.add(info_lbl, 1, 1)
+about_me_container.add(info_lbl2, 2, 1) # Adds the about me info to the container
+about_me_container.add(info_lbl3, 3, 1) # Adds the about me info to the container
+about_me_container.add(git_hub_lbl, 3, 2, align="left") # Adds the about me info to the container
+
+#####################################################################
+#######################    About Me Window   ########################
+
 about_me_window.set_grid(2, 2) # Sets the grid of the window
 int_lbl = gp.StyleLabel(about_me_window, "About the App") # Label
 int_lbl.font_size = 20 # Font size
 info_lbl = gp.Label(about_me_window, "This is version 1 of Password Checker 9000, it's meant to be a guide to help people understand how they can improve their passwords or create a strong password to see what else i have made check out my git hub page") # Label
-git_hub_lbl = gp.Hyperlink(about_me_window, "Here", "https://github.com/ollienunn")
-about_me_info = gp.Label(about_me_window, "" + str(info_lbl) + str(git_hub_lbl)) # Text box for the about me info
-
+#git_hub_lbl = gp.Hyperlink(about_me_window, "Here", "https://github.com/ollienunn")
 about_me_window.add(int_lbl, 1, 1, column_span = 2, align="center") # Adds the label to the window
-about_me_window.add(info_lbl, 2, 1, align="right") # Adds the about me info to the window
-about_me_window.add(git_hub_lbl, 2, 2, align="left") # Adds the about me info to the window
+about_me_window.add(about_me_container, 2, 1) # Adds the about me info to the window
+#about_me_window.add(git_hub_lbl, 2, 2, align="left") # Adds the about me info to the window
+
+########################    Requirments Window   ##########################
 
 requirments_window = gp.Window(app, "Requirements") # Creates a new window
 requirments_window.height = 400 # Sets the height of the window
