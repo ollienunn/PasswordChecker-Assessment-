@@ -2,7 +2,7 @@ import gooeypie as gp
 import hashlib
 import requests
 
-WIDTH = 1000
+WIDTH = 800
 HEIGHT = 600
 ROWS = 4
 COLUMNS = 3
@@ -69,7 +69,11 @@ def check_password(event): # Checks the password
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break
             
-            check_password_pwned(password)  # Checks if the password has been pwned
+            #check_password_pwned(password)  # Checks if the password has been pwned
+            pwned_count = check_password_pwned(password)
+            if pwned_count > 0:
+                feedback.text += f"⚠️ Your password has been found in {pwned_count} breaches!\n"
+                strength_password.value = 0
 
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
@@ -150,22 +154,28 @@ def check_password_pwned(password):
     #    if h == suffix:
     #        return int(count)  # Number of times password was found
     #return 0  # Password not found
+
     try:
         sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
         prefix = sha1_password[:5]
         suffix = sha1_password[5:]
 
         url = f"https://api.pwnedpasswords.com/range/{prefix}"
-        res = requests.get(url)
+        headers = {"User-Agent": "PasswordChecker9000"}
+        res = requests.get(url, headers=headers, timeout=5)
 
         if res.status_code != 200:
-            feedback.text += f"Error fetching pwned data (Status {res.status_code})\n"
+            feedback.text += f"Could not check pwned password: HTTP {res.status_code}\n"
             return 0
 
         hashes = (line.split(':') for line in res.text.splitlines())
         for h, count in hashes:
             if h == suffix:
+                feedback.text += f"⚠️ This password has been found in {count} breaches! do not use this password\n"
+                strength_password.value = 0
+                app.set_icon("Cross.png")
                 return int(count)
+
         return 0
     except Exception as e:
         print(f"Error checking pwned password: {e}\n")
