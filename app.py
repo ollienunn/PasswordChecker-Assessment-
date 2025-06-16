@@ -70,10 +70,7 @@ def check_password(event): # Checks the password
                     break
             
             #check_password_pwned(password)  # Checks if the password has been pwned
-            pwned_count = check_password_pwned(password)
-            if pwned_count > 0:
-                feedback.text += f"⚠️ Your password has been found in {pwned_count} breaches!\n"
-                strength_password.value = 0
+            pwned_count = check_password_pwned(password) # It works but gives a warning in the console
 
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
@@ -104,10 +101,7 @@ def check_password(event): # Checks the password
                     break
             
             #check_password_pwned(password)  # Checks if the password has been pwned
-            pwned_count = check_password_pwned(password)
-            if pwned_count > 0:
-                feedback.text += f"⚠️ Your password has been found in {pwned_count} breaches!\n"
-                strength_password.value -= 30
+            pwned_count = check_password_pwned(password) # It works but gives a warning in the console
             
             if strength_password.value == 100:
                 feedback.text += "Your password is strong, Good Job\n"
@@ -140,21 +134,6 @@ def check_password(event): # Checks the password
             r.close()
 
 def check_password_pwned(password):
-    #sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
-    #prefix = sha1_password[:5]
-    #suffix = sha1_password[5:]
-
-    #url = f"https://api.pwnedpasswords.com/range/{prefix}"
-    #res = requests.get(url)
-    #if res.status_code != 200:
-    #    raise RuntimeError(f"Error fetching: {res.status_code}")
-
-    #hashes = (line.split(':') for line in res.text.splitlines())
-    #for h, count in hashes:
-    #    if h == suffix:
-    #        return int(count)  # Number of times password was found
-    #return 0  # Password not found
-
     try:
         sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
         prefix = sha1_password[:5]
@@ -165,7 +144,7 @@ def check_password_pwned(password):
         res = requests.get(url, headers=headers, timeout=5)
 
         if res.status_code != 200:
-            feedback.text += f"Could not check pwned password: HTTP {res.status_code}\n"
+            app.alert("Error", "Error checking the pwned passwords please wait than try again")
             return 0
 
         hashes = (line.split(':') for line in res.text.splitlines())
@@ -178,7 +157,7 @@ def check_password_pwned(password):
 
         return 0
     except Exception as e:
-        print(f"Error checking pwned password: {e}\n")
+        app.alert("Error", "Error checking the pwned passwords please wait than try again", "error")
         return 0
 
 ######################
@@ -234,7 +213,7 @@ requirments_window.width = 400 # Sets the width of the window
 requirments_window.set_grid(2, 1) # Sets the grid of the window
 requirments_lbl = gp.StyleLabel(requirments_window, "Requirments") # Label
 requirments_lbl.font_size = 20 # Font size
-requirments_info = gp.Label(requirments_window, "The requirements for a good password are,\n The length being above 10 characters, \n Having at least one uppercase letter,\n A special charactcer eg (#:!£$*),\n Numbers (123456789).\n") # Label
+requirments_info = gp.Label(requirments_window, "The requirements for a good password are,\n The length being above 10 characters, \n Having at least one uppercase letter,\n A special charactcer eg (#:!£$*),\n Numbers (123456789),\n NOT HAVING A PASSWORD USED IN A DATA BREACH.") # Label
 
 requirments_window.add(requirments_lbl, 1, 1, align="center") # Adds the label to the window
 requirments_window.add(requirments_info, 2, 1, align="center") # Adds the about me info to the window
