@@ -1,6 +1,6 @@
-from re import A
 import gooeypie as gp
-import pwnedpasswords
+import hashlib
+import requests
 
 WIDTH = 1000
 HEIGHT = 600
@@ -69,13 +69,7 @@ def check_password(event): # Checks the password
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break
             
-            # Check if password has been pwned
-            pwned_count = pwnedpasswords.check(password)
-
-            if pwned_count > 0:
-                feedback.text += f"Warning: This password has appeared in {pwned_count} data breaches you should change it\n"
-                strength_password.value -= 40
-
+            check_password_pwned(password)  # Checks if the password has been pwned
 
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
@@ -105,11 +99,11 @@ def check_password(event): # Checks the password
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break
             
-            pwned_count = pwnedpasswords.check(password)
-
+            #check_password_pwned(password)  # Checks if the password has been pwned
+            pwned_count = check_password_pwned(password)
             if pwned_count > 0:
-                feedback.text += f"Warning: This password has appeared in {pwned_count} data breaches you should change it\n"
-                strength_password.value -= 20
+                feedback.text += f"⚠️ Your password has been found in {pwned_count} breaches!\n"
+                strength_password.value -= 30
             
             if strength_password.value == 100:
                 feedback.text += "Your password is strong, Good Job\n"
@@ -141,11 +135,47 @@ def check_password(event): # Checks the password
             f.close()
             r.close()
 
+def check_password_pwned(password):
+    #sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+    #prefix = sha1_password[:5]
+    #suffix = sha1_password[5:]
+
+    #url = f"https://api.pwnedpasswords.com/range/{prefix}"
+    #res = requests.get(url)
+    #if res.status_code != 200:
+    #    raise RuntimeError(f"Error fetching: {res.status_code}")
+
+    #hashes = (line.split(':') for line in res.text.splitlines())
+    #for h, count in hashes:
+    #    if h == suffix:
+    #        return int(count)  # Number of times password was found
+    #return 0  # Password not found
+    try:
+        sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+        prefix = sha1_password[:5]
+        suffix = sha1_password[5:]
+
+        url = f"https://api.pwnedpasswords.com/range/{prefix}"
+        res = requests.get(url)
+
+        if res.status_code != 200:
+            feedback.text += f"Error fetching pwned data (Status {res.status_code})\n"
+            return 0
+
+        hashes = (line.split(':') for line in res.text.splitlines())
+        for h, count in hashes:
+            if h == suffix:
+                return int(count)
+        return 0
+    except Exception as e:
+        print(f"Error checking pwned password: {e}\n")
+        return 0
+
 ######################
 # Need a score system for the password,
 #                                                       
-#                                       if it has been pwnaed = - points
-#                                       common letters = - points
+#                                       if it has been pwnaed = - points Work in progress
+#                                       common letters = - points havn't done this yet
 #
 ######################
 
@@ -182,8 +212,6 @@ about_me_container.add(git_hub_lbl, 3, 2, align="left") # Adds the about me info
 about_me_window.set_grid(2, 2) # Sets the grid of the window
 int_lbl = gp.StyleLabel(about_me_window, "About the App") # Label
 int_lbl.font_size = 20 # Font size
-info_lbl = gp.Label(about_me_window, "This is version 1 of Password Checker 9000, it's meant to be a guide to help people understand how they can improve their passwords or create a strong password to see what else i have made check out my git hub page") # Label
-#git_hub_lbl = gp.Hyperlink(about_me_window, "Here", "https://github.com/ollienunn")
 about_me_window.add(int_lbl, 1, 1, column_span = 2, align="center") # Adds the label to the window
 about_me_window.add(about_me_container, 2, 1) # Adds the about me info to the window
 #about_me_window.add(git_hub_lbl, 2, 2, align="left") # Adds the about me info to the window
