@@ -9,6 +9,10 @@ COLUMNS = 3
 
 ############ Classes (def) ############
 
+def check_exit(): # Checks if the user wants to exit the app
+    ok_to_exit = app.confirm_yesno('Really?', 'Are you sure you want to close?', 'question')
+    return ok_to_exit
+
 def toggle_mask(event): # Toggles the password
     password_inp.toggle() # Makes the input visible or not
 
@@ -256,5 +260,6 @@ app.add(feedback_lbl, 4, 1, align="center") # Aligns the input to the center
 app.add(feedback, 4, 2) # Adds the feedback input to the app#
 
 ###########################################
+app.on_close(check_exit)
 
 app.run() # Makes the app run
