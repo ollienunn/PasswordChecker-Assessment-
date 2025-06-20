@@ -73,8 +73,11 @@ def check_password(event): # Checks the password
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break
             
+            sequential_stuff(password)
             #check_password_pwned(password)  # Checks if the password has been pwned
-            pwned_count = check_password_pwned(password) # It works but gives a warning in the console
+            check_password_pwned(password) # It works but gives a warning in the console
+            if strength_password.value <= 0:   
+                strength_password.value = 0                                                                                                  
 
         elif len(password) >= 10: # Checks the length of the password
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
@@ -104,38 +107,17 @@ def check_password(event): # Checks the password
                     feedback.text += "Your password contains a very common password ('{}'), make it more unique!\n".format(common)
                     break
             
+            sequential_stuff(password)
             #check_password_pwned(password)  # Checks if the password has been pwned
-            pwned_count = check_password_pwned(password) # It works but gives a warning in the console
-            
-            if strength_password.value == 100:
-                feedback.text += "Your password is strong, Good Job\n"
-                app.set_icon("Green_tick.svg.png") # Sets the icon of the app
-            if strength_password.value == 80:
-                feedback.text += "Your password is alright but it could be improved\n"
-            if strength_password.value == 70:
-                feedback.text += "Your password is better but don't include a common password\n"
-                app.set_icon("Green_tick.svg.png") # Sets the icon of the app
-            if strength_password.value == 60:
-                feedback.text += "Look at the feedback then fix your password\n"
-                app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
-            if strength_password.value == 40:
-                feedback.text += "Listen to the feedback and try again\n"
-                app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
-            if strength_password.value == 20:
-                feedback.text += "Wow your password really sucks use the feedback you need it\n"
-                app.set_icon("Cross.png") # Changes the icon to a red cross if the password is bad
- 
-            #if password in clean_passwords or password in more_common_passwords:
-            #    strength_password.value -= 20
-            #    feedback.text += "Your password is one of the most common passwords change it to be more abstract\n"
-            #else:
-            #    return
-        elif len(password) > 25:
-            feedback.text += "Your password is super long but strong hope you can remember it :)\n" # Adds to the feedback
-            strength_password.value = 90
+            check_password_pwned(password) # It works but gives a warning in the console
+            if strength_password.value <= 0:   
+                strength_password.value = 0       
+
+            if strength_password.value >= 85:
+                feedback.text += "Your password stronger than most good job\n"
     
-            f.close()
-            r.close()
+        f.close()
+        r.close()
 
 def check_password_pwned(password):
     try:
@@ -148,7 +130,7 @@ def check_password_pwned(password):
         res = requests.get(url, headers=headers, timeout=5)
 
         if res.status_code != 200:
-            app.alert("Error", "Error checking the pwned passwords please wait than try again")
+            app.alert("Error", "Error checking if password has been pwned please wait than try again")
             return 0
 
         hashes = (line.split(':') for line in res.text.splitlines())
@@ -164,13 +146,23 @@ def check_password_pwned(password):
         app.alert("Error", "Error checking the pwned passwords please wait than try again", "error")
         return 0
 
-######################
-# Need a score system for the password,
-#                                                       
-#                                       if it has been pwnaed = - points Work in progress
-#                                       common letters = - points havn't done this yet
-#
-######################
+def sequential_stuff(password):
+    password = password.lower()  # Case-insensitive
+
+    # Check for repeating characters (e.g., aaa, 111)
+    for i in range(len(password) - 2):
+        if password[i] == password[i+1] == password[i+2]:
+            feedback.text += f"Repeating pattern found: '{password[i]*3}'\n"
+            strength_password.value -= 20
+
+    # Check for sequential characters (e.g., abc, 123)
+    for i in range(len(password) - 2): # Used gpt for this
+        a, b, c = password[i], password[i+1], password[i+2]
+        if ord(b) == ord(a) + 1 and ord(c) == ord(b) + 1:
+            feedback.text += f"Sequential pattern found: '{a + b + c}'\n"
+            strength_password.value -= 15
+
+    return False, ""
 
 app = gp.GooeyPieApp("Password Checker") # Defines the stuff in app
 app.set_size(WIDTH, HEIGHT) # Makes the app a certain size depending on the width and height
@@ -207,7 +199,6 @@ int_lbl = gp.StyleLabel(about_me_window, "About the App") # Label
 int_lbl.font_size = 20 # Font size
 about_me_window.add(int_lbl, 1, 1, column_span = 2, align="center") # Adds the label to the window
 about_me_window.add(about_me_container, 2, 1) # Adds the about me info to the window
-#about_me_window.add(git_hub_lbl, 2, 2, align="left") # Adds the about me info to the window
 
 ########################    Requirments Window   ##########################
 
