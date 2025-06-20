@@ -253,4 +253,5 @@ app.add(feedback, 4, 2) # Adds the feedback input to the app#
 ###########################################
 app.on_close(check_exit)
 
-app.run() # Makes the app run
+app.run() # Makes the app run 
+# Finished app 
