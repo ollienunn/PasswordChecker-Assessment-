@@ -44,7 +44,7 @@ def check_password(event): # Checks the password
             strength_password.value -= 90
             app.set_icon("Cross.png") # Sets the icon of the app
         elif len(password) <= 9:
-            strength_password.value -= 50
+            strength_password.value -= 40
             app.set_icon("Cross.png") # Sets the icon of the app
             if not any(char.isdigit() for char in password): # Checks if there are numbers in the password
                 feedback.text += "Your password must contain a number\n" # Adds to the feedback
@@ -182,8 +182,8 @@ about_me_container = gp.Container(about_me_window) # Creates a new container
 about_me_container.set_grid(3, 2) # Sets the grid of the container
 
 info_lbl = gp.Label(about_me_container, "This is version 1 of Password Checker 9000,")
-info_lbl2 = gp.Label(about_me_container, "It's meant to be a guide to help people understand how they can improve their passwords,") # Label
-info_lbl3 = gp.Label(about_me_container, "Or create a strong password to see what else i have made check out my git hub page") # Label
+info_lbl2 = gp.Label(about_me_container, "It's meant to be a guide to help people understand how they can improve their passwords,\nOr help people find out how to create a password and the requirements for a strong password \n") # Label
+info_lbl3 = gp.Label(about_me_container, "To see what else I have made check out my git hub page") # Label 
 git_hub_lbl = gp.Hyperlink(about_me_container, "Here!", "https://github.com/ollienunn")
 
 about_me_container.add(info_lbl, 1, 1)
