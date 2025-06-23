@@ -1,34 +1,18 @@
-# Awesome Quiz Project
+# Password Checker 9000
 
-Welcome to the **Best Bar Quiz!**, a Python-based interactive quiz game. This project challenges players with questions from three categories: **General Knowledge**, **Sport**, and **Other**. It features a scoring system, hints, and a leaderboard to track high scores.
+Welcome to the **Password Checker 9000!**, a Python-based application to ensure your password will be thoroughly checked and give good feedback about the strength of a given password. 
 
 ---
 
 ## Author
-- Main author and developer - Oliver Nunn, Mighty Murray Man, Student at St Augustines 
-- Assistance - GitHub Copilot
+- Main author and developer - Oliver Mighty Murray Man Nunn, St Augustines
+- Assistance - GitHub Copilot, Mr GPT
 
 ---
 ## Features
-
-- **Three Categories**:
-  - **General Knowledge**: Test your knowledge on a variety of topics.
-  - **Sport**: Questions about different sports.
-  - **Other**: Random and quirky questions with hints available.
-  
-- **Hints System**:
-  - Players get 3 hints for the "Other" category.
-  - Hints can be used by typing `hint` during the quiz.
-
-- **Leaderboard**:
-  - Tracks the highest scores for each category.
-  - Updates the leaderboard if a new high score is achieved.
-
-- **Dynamic Effects**:
-  - Includes text effects like `beam` and `decrypt` for a more engaging experience.
-
-- **Replayability**:
-  - Players can replay the quiz and try to beat their previous scores.
+- Connects to the have you been pwned website and checks your given password, returns if it has been in a data breach or not
+- Cool progress bar
+- A hidden easter egg
 
 ---
 
@@ -36,19 +20,23 @@ Welcome to the **Best Bar Quiz!**, a Python-based interactive quiz game. This pr
 
 1. **Prerequisites**:
    - Python 3.13.2 installed on your system.
-   - Pip is also required for the text effects
-   - Ensure the following files are downloaded aswell as having them in the same folder to run the quiz:
-     - `Main.py` (this file)
-     - `Questions.py` (contains the questions dictionary)
-     - `Other_effect.py` (contains the `beam` effect)
-     - `Rain_Effect.py` (contains the `decrypt` effect)
-     - `leaderboard` (contains the leaderboard)
+   - You need to download GooeyPie, instructions are 
+        - Open the command prompt
+        - Paste the following, pip install gooeypie
+        - Wait for it to download
+   - Ensure all the files are downloaded aswell as having them in the same folder to run the quiz:
+     - `app.py` (this file)
+     - `10000-passwords.txt` (contains lots of common passwords)
+     - `passwords_10k.txt` (contains more common passwords)
+     - `Cross.png` (Visual indicator about password strength)
+     - `Green_tick.svg.png` (Visual indicator about password strength)
 
 
-3. **Follow the Instructions**:
-   - Choose a category.
-   - Answer the questions.
-   - Use hints if needed (Only for the "Other" category).
-   - Check your score and leaderboard status at the end.
+3. **What to do**:
+   - Enter your password in the text box.
+   - Click the check password button.
+   - Read the feedback.
+   - Adapt your password until you are happy with it's security and strength.
 
 ---
+
